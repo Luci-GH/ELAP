@@ -68,10 +68,12 @@
   background: rgba(6, 8, 12, 0.78);
   backdrop-filter: blur(8px) !important;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   padding: 16px;
   box-sizing: border-box;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   animation: elapFadeIn 0.15s ease-out;
 }
 
@@ -83,8 +85,10 @@
 /* ---------- Главный контейнер модалки ---------- */
 .elap-modal {
   width: min(960px, 95vw);
-  max-height: 90vh;
+  max-height: calc(100dvh - 32px);
+  max-height: calc(100vh - 32px);
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background: var(--elap-bg-surface) !important;
   color: var(--elap-text) !important;
   border: 1px solid var(--elap-border) !important;
@@ -93,20 +97,27 @@
   box-sizing: border-box;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 1px 1px rgba(255, 255, 255, 0.05) !important;
   position: relative;
+  margin: auto;
 }
 
 .elap-modal-expanded {
   width: min(1320px, 96vw) !important;
 }
 
-/* ---------- Шапка модалки ---------- */
-.elap-modal-header {
-  margin-bottom: 16px;
-  padding-bottom: 12px;
+/* ---------- Шапка модалки (Sticky) ---------- */
+.elap-modal-header,
+.elap-modal-sticky-header {
+  position: sticky;
+  top: -18px;
+  z-index: 50;
+  background: var(--elap-bg-surface);
+  margin: -18px -22px 14px -22px;
+  padding: 14px 22px 12px 22px;
   border-bottom: 1px solid var(--elap-border);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  backdrop-filter: blur(12px);
 }
 
 .elap-modal-header b,
@@ -1200,4 +1211,263 @@
 @keyframes elapFadeIn {
   from { opacity: 0; transform: translateY(2px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   МОБИЛЬНАЯ АДАПТАЦИЯ (MOBILE RESPONSIVE — <= 768px)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  /* 1. Мобильный оверлей и модальные окна */
+  .elap-overlay {
+    padding: 6px 4px !important;
+    align-items: flex-start !important;
+  }
+
+  .elap-modal,
+  .elap-modal-expanded,
+  #elap_smart_import_overlay .elap-modal {
+    width: 100% !important;
+    max-width: 100vw !important;
+    max-height: calc(100dvh - 12px) !important;
+    max-height: calc(100vh - 12px) !important;
+    padding: 10px 10px 14px 10px !important;
+    margin: 0 auto !important;
+    border-radius: var(--elap-radius-md) !important;
+  }
+
+  /* 2. Липкая шапка модалки */
+  .elap-modal-header,
+  .elap-modal-sticky-header {
+    top: -10px !important;
+    margin: -10px -10px 10px -10px !important;
+    padding: 10px 10px 8px 10px !important;
+  }
+
+  .elap-modal-header b,
+  .elap-modal-title {
+    font-size: 13.5px !important;
+    gap: 6px !important;
+    max-width: calc(100% - 44px) !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .elap-close-btn-x {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    font-size: 16px !important;
+  }
+
+  /* 3. Горизонтальная скролл-лента вкладок (Tabs Ribbon) */
+  .elap-tabs-header {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 6px !important;
+    padding-bottom: 8px !important;
+    margin-bottom: 12px !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  .elap-tabs-header::-webkit-scrollbar {
+    display: none !important;
+    height: 0 !important;
+  }
+
+  .elap-tab-btn {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    padding: 6px 11px !important;
+    font-size: 11.5px !important;
+    border-radius: var(--elap-radius-sm) !important;
+  }
+
+  /* 4. Поля ввода, селекты и кнопки */
+  .elap-modal input[type="text"],
+  .elap-modal input[type="number"],
+  .elap-modal input[type="time"],
+  .elap-modal select,
+  .elap-modal textarea {
+    font-size: 13px !important;
+    padding: 7px 9px !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .elap-btn,
+  .menu_button.elap-btn-compact,
+  .menu_button.elap-btn {
+    padding: 5px 8px !important;
+    font-size: 11px !important;
+  }
+
+  /* 5. Настройки: Агент и Модель */
+  #elap_reasoning_controls_wrap {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  #elap_reasoning_controls_wrap > div,
+  #elap_custom_budget_wrap {
+    min-width: 100% !important;
+    flex: 1 1 100% !important;
+  }
+
+  #elap_cfg_freq_wrap {
+    margin-left: 0 !important;
+    padding: 8px 6px !important;
+  }
+
+  #elap_cfg_freq_wrap > div {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  #elap_cfg_freq_wrap > div > div {
+    min-width: 100% !important;
+    flex: 1 1 100% !important;
+  }
+
+  #elap_profile_info > div {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+  }
+
+  .elap-token-box > div:nth-child(2) {
+    flex-direction: column !important;
+    gap: 3px !important;
+  }
+
+  /* 6. Редактор персонажа (ui-editor.js) */
+  #elap_editor_modal_box .elap-modal-sticky-header > div:first-child {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+
+  #elap_editor_modal_box .elap-modal-sticky-header > div:first-child > div:last-child {
+    width: 100% !important;
+    justify-content: flex-end !important;
+  }
+
+  #elap_editor_modal_box .elap-modal-sticky-header > div:last-child {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+  }
+
+  #elap_editor_modal_box .elap-modal-sticky-header > div:last-child > div:last-child {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    padding-bottom: 4px !important;
+  }
+
+  /* Таймлайн сетка 2 колонки на телефоне */
+  #elap_timeline_editor_block > div:last-child {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  #elap_timeline_editor_block > div:last-child > div {
+    width: auto !important;
+    min-width: 0 !important;
+    flex: none !important;
+  }
+
+  #elap_timeline_editor_block > div:last-child > div:last-child {
+    grid-column: span 2 !important;
+  }
+
+  /* Ряды блоков контекста */
+  .elap-block-row > div:first-child {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    align-items: center !important;
+  }
+
+  .elap-block-row input[data-f="name"] {
+    flex: 1 1 100% !important;
+    order: 2 !important;
+    margin-top: 2px !important;
+  }
+
+  .elap-block-row input[data-f="key"] {
+    flex: 1 1 auto !important;
+    width: auto !important;
+    order: 4 !important;
+  }
+
+  /* 7. Колоды Мира (cards.js) */
+  .elap-decks-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .elap-deck-card {
+    padding: 10px 12px !important;
+  }
+
+  #elap_cards_overlay .elap-modal-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+
+  #elap_cards_overlay .elap-modal-header > div:last-child {
+    width: 100% !important;
+    overflow-x: auto !important;
+    padding-bottom: 4px !important;
+  }
+
+  #elap_active_cards_bar {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+  }
+
+  /* 8. Сетка персонажей (ui.js) */
+  .elap-chars-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .elap-char-primary-actions {
+    flex-wrap: wrap !important;
+  }
+
+  /* 9. Плавающий Agent HUD (#elap_agent_hud) на мобильных */
+  .elap-agent-hud {
+    top: 12px !important;
+    bottom: auto !important;
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    max-width: calc(100% - 20px) !important;
+    justify-content: space-between !important;
+    padding: 6px 12px !important;
+    border-radius: 20px !important;
+  }
+
+  /* 10. Кнопки в боковой панели Таверны (#elap_settings) */
+  .elap-drawer-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
+    width: 100% !important;
+  }
+
+  .elap-drawer-actions > button {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
 }

@@ -1069,6 +1069,13 @@ export function openSettingsModal() {
 
         <div class="elap-row" style="margin-bottom:8px;">
           <label class="checkbox_label" style="display:flex; align-items:center; gap:8px; cursor:pointer; margin:0;">
+            <input id="elap_cfg_cards_preagent" type="checkbox" ${s.cardsPreAgentEnabled !== false ? "checked" : ""}>
+            <b><i class="fa-solid fa-bolt" style="color:#f59e0b;"></i> Pre-Agent (семантическая проверка правил ДО ответа модели)</b>
+          </label>
+        </div>
+
+        <div class="elap-row" style="margin-bottom:8px;">
+          <label class="checkbox_label" style="display:flex; align-items:center; gap:8px; cursor:pointer; margin:0;">
             <input id="elap_cfg_cards_autoinject" type="checkbox" ${s.cardsAutoInjectActive !== false ? "checked" : ""}>
             <b>Автоматически внедрять активные карточки в промпт ({{elap}})</b>
           </label>
@@ -1195,6 +1202,11 @@ export function openSettingsModal() {
   overlay.querySelector("#elap_cfg_events_enabled")?.addEventListener("change", (e) => { s.eventsEnabled = !!e.target.checked; save(); registerAllElapMacros(); });
   overlay.querySelector("#elap_cfg_swipe_bypass")?.addEventListener("change", (e) => { s.eventsSwipeBypassEnabled = !!e.target.checked; save(); });
   overlay.querySelector("#elap_cfg_cards_enabled")?.addEventListener("change", (e) => { s.cardsEnabled = !!e.target.checked; save(); registerAllElapMacros(); renderSettingsUI(); });
+  overlay.querySelector("#elap_cfg_cards_preagent")?.addEventListener("change", (e) => {
+    s.cardsPreAgentEnabled = !!e.target.checked;
+    save();
+    if (window.toastr) toastr.info(s.cardsPreAgentEnabled ? "Pre-Agent карточек ВКЛЮЧЁН" : "Pre-Agent выключен");
+  });
   overlay.querySelector("#elap_cfg_cards_autoinject")?.addEventListener("change", (e) => { s.cardsAutoInjectActive = !!e.target.checked; save(); registerAllElapMacros(); });
   overlay.querySelector("#elap_cfg_btn_open_cards_mgr")?.addEventListener("click", () => openCardsManagerModal());
   overlay.querySelector("#elap_cfg_btn_open_cards_dbg")?.addEventListener("click", () => openCardDebuggerModal());
@@ -1506,7 +1518,7 @@ export function renderSettingsUI() {
       <b><i class="fa-solid fa-brain" style="color:var(--elap-primary); margin-right:6px;"></i> Easy Long AI Play (ELAP)</b>
     </div>
     <div class="inline-drawer-content">
-      <div class="elap-row" style="display:flex; gap:6px; flex-wrap:wrap; margin-top:4px;">
+      <div class="elap-row elap-drawer-actions" style="display:flex; gap:6px; flex-wrap:wrap; margin-top:4px;">
         <button id="elap_btn_open_inspector" class="elap-btn elap-btn-primary elap-btn-compact"><i class="fa-solid fa-magnifying-glass"></i> Inspector</button>
         <button id="elap_btn_open_cards" class="elap-btn elap-btn-accent elap-btn-compact"><i class="fa-solid fa-layer-group"></i> Колоды Мира</button>
         <button id="elap_btn_open_characters" class="elap-btn elap-btn-secondary elap-btn-compact"><i class="fa-solid fa-users"></i> Персонажи</button>
