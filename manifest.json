@@ -1,0 +1,8 @@
+{
+ "name": "elap",
+ "display_name": "Easy Long AI Play (ELAP)",
+ "author": "Luci-GH",
+ "version": "0.0.1",
+ "js": "index.js",
+ "css": "style.css",
+ "loading_order":1000}
